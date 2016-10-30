@@ -1,38 +1,17 @@
 var express = require("express");
 var app = express();
-var moment = require('moment');
-
-//dates with these formats could be parsed correctly
-var formats = ["MMMM DD YYYY", "MMMM YYYY DD", "YYYY DD MMMM", "YYYY MMMM DD", "DD YYYY MMMM", "DD MMMM YYYY",
-			   "YYYY M DD", "YYYY DD M", "M DD YYYY", "M YYYY DD", "DD YYYY M", "DD M YYYY"];
-
-//app config
-app.set("view engine", "ejs");
 
 app.get("/", function(request, response){
-	response.render("index");
-});
-
-app.get("/:date", function(request, response){	
-
-	var dateParam = request.params.date;
 	
-	var date = null;
-
-	if(!isNaN(dateParam)){
-		//dateParam was a number
-		date = moment.unix(dateParam).utc();		
-	}else{				
-		date = moment.utc(dateParam, formats);								
-	}	
+	var ip = request.ip;
+	var language = request.headers["accept-language"].split(",")[0];	
+	var software = request.headers['user-agent'].match(/\(([^)]+)\)/)[1];
 	
-	if(date.isValid()){
-		//passed data was correct
-		response.json({unix: +date.format("X"), natural: date.format("MMMM D, YYYY")});	
-	}else{
-		//passed data was incorrect
-		response.json({unix: null, natural: null});	
-	}	
+	response.json({
+		ipaddress: ip, 
+		language: language, 
+		software: software
+	});	
 });
 
 //if Process env port is not defined - set 5000 as a port
