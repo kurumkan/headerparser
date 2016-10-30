@@ -1,8 +1,7 @@
 var express = require("express");
 var app = express();
 
-app.get("/", function(request, response){
-	
+app.get("/", function(request, response){	
 	var ip = request.ip;
 	var language = request.headers["accept-language"].split(",")[0];	
 	var software = request.headers['user-agent'].match(/\(([^)]+)\)/)[1];
