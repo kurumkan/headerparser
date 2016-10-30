@@ -2,7 +2,12 @@ var express = require("express");
 var app = express();
 
 app.get("/", function(request, response){	
-	var ip = request.ip;
+	//var ip = request.ip;
+	var ip = request.headers['x-forwarded-for'] || 
+		     request.connection.remoteAddress || 
+		     request.socket.remoteAddress ||
+		     request.connection.socket.remoteAddress;
+
 	var language = request.headers["accept-language"].split(",")[0];	
 	var software = request.headers['user-agent'].match(/\(([^)]+)\)/)[1];
 	
