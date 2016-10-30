@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 
 app.get("/", function(request, response){	
-	//var ip = request.ip;
+	
 	var ip = request.headers['x-forwarded-for'] || 
 		     request.connection.remoteAddress || 
 		     request.socket.remoteAddress ||
